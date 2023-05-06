@@ -1,0 +1,105 @@
+#define FIRE_SENSOR 2 // tell kareem to modify it
+#define BUZZER 11
+#define IR_ENTER 3 // tell kareem to modify it
+#define IR_EXIT 7
+#define LED_1 8 
+#define LED_2 10
+#define LED_3 12
+#define LED_4 13
+#define DELAY_TIME 250
+
+volatile unsigned char emptySlots = 4; //counter for empty spaces in garage
+
+void setup() 
+{
+  noInterrupts ();
+
+  Serial.begin (9600);
+
+  pinMode (FIRE_SENSOR , INPUT);
+  pinMode (BUZZER , OUTPUT);
+  pinMode (LED_1 , OUTPUT);
+  pinMode (LED_2 , OUTPUT);
+  pinMode (LED_3 , OUTPUT);
+  pinMode (LED_4 , OUTPUT);
+
+  //External interrupts 
+  attachInterrupt (INT0 , alarming , FALLING);
+  attachInterrupt (INT1 , enter , FALLING);
+
+  //Pin Change interrupt
+  PCICR |= 0B00000100; 
+  PCMSK2 |= 0B10000000;
+
+  interrupts();
+}
+
+void loop()
+{
+  //Turn off light if garage is totaly empty and turn them on when there are cars
+  switch (emptySlots)
+  {
+    case 4: 
+       digitalWrite (LED_1 ,LOW);
+       digitalWrite (LED_2 ,LOW);
+       digitalWrite (LED_3 ,LOW);
+       digitalWrite (LED_4 ,LOW);
+    break;
+
+    default:
+       digitalWrite (LED_1 ,HIGH);
+       digitalWrite (LED_2 ,HIGH);
+       digitalWrite (LED_3 ,HIGH);
+       digitalWrite (LED_4 ,HIGH);
+  }
+
+  while (!digitalRead (FIRE_SENSOR))
+  {
+    ledBlink();
+    //Entrance servo open function
+    //Exit servo open function
+    //lcdWrite ("fire !!") on LCD
+  }
+
+  if (digitalRead(FIRE_SENSOR))
+    noTone (BUZZER);
+}
+
+//fire sensor interrupt function
+void alarming()
+{
+  tone(BUZZER , 1000);
+  //serialWrite("fire !!")  to  mobile APK.
+}
+
+//enterance IR interrupt function
+void enter ()
+{
+  emptySlots--;
+  //Entrance servo open function
+}
+
+// LED blinking in case of Fire
+void ledBlink ()
+{
+  digitalWrite (LED_1 ,HIGH);
+  digitalWrite (LED_2 ,HIGH);
+  digitalWrite (LED_3 ,HIGH);
+  digitalWrite (LED_4 ,HIGH);
+
+  delay(DELAY_TIME);
+
+  digitalWrite (LED_1 ,LOW);
+  digitalWrite (LED_2 ,LOW);
+  digitalWrite (LED_3 ,LOW);
+  digitalWrite (LED_4 ,LOW);
+
+  delay(DELAY_TIME);
+}
+
+//Exit IR interrupt service routine (interrupt function)
+ISR(PCINT2_vect)
+{
+  emptySlots++;
+  //Exit servo open function
+}

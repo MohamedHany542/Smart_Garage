@@ -1,0 +1,35 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);  // Set the LCD I2C address and dimensions
+void setup() {
+  lcd.init();                     // Initialize the LCD
+  lcd.backlight();                // Turn on the backlight
+  Serial.begin(9600);
+}
+
+void loop() {
+  // for ir condition in  abdelrahman  code
+    if (emptySlots< 0 || emptyslots>4) { //if count goes below 0 or above 4 , restart count at 4 (repeat all the trial )
+emptyslots=4; 
+    }
+    lcd.clear(); //clear the LCD
+    lcd.setCursor(0, 0);
+    lcd.print("NO OF SLOTS ARE = "); //print to LCD at first columm >> starting drom first row (row , column)
+    lcd.setCursor(0,1)// print count to lcd at second column >> starting drom first row (row , column)
+    lcd.print(emptySlots);
+// for flame sensor condition  in abdelrahman code 
+    lcd.clear(); //clear the LCD
+    lcd.setCursor(0, 0);
+    lcd.print("fire! fire! "); //print to LCD at first columm >> starting from first row (row , column)
+    
+
+
+
+
+
+
+
+
+
+

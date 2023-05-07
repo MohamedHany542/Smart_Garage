@@ -1,0 +1,33 @@
+#include <servo.h>
+
+Servo ENTER_SERVO;
+
+int ENTERsignal=6;//depends on connection
+int initialpos1=;//determined by trial on the motor
+unsigned long PREVIOUS_TIME=0;
+int EVENT_INTERVAL=3000;
+void setup() 
+{
+
+ENTER_SERVO.attach(ENTERsignal);
+
+ENTER_SERVO.write(initialpos1);
+
+
+
+}
+void loop()
+{
+ unsigned long CURRENT_TIME=millis();
+ 
+ if(digitalread(IR_ENTER)==0)
+ {
+   emptySlots--;
+   ENTER_SERVO.write();//determined by trial on the motor
+   PREVIOUS_TIME =CURRENT_TIME; 
+ }
+   if(CURRENT_TIME-PREVIOUS_TIME>=EVENT_INTERVAL)
+    ENTER_SERVO.write(initialpos1);
+  
+ 
+}

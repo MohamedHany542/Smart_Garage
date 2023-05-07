@@ -52,6 +52,8 @@ void loop()
        digitalWrite (LED_3 ,HIGH);
        digitalWrite (LED_4 ,HIGH);
   }
+  
+  // lcdWrite(emptySlots) on LCD
 
   while (!digitalRead (FIRE_SENSOR))
   {

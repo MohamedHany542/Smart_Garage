@@ -24,7 +24,7 @@ void Bluetooth_alarm(){ // this function should be called if the flame sensor de
 
 }
 
-void Bluetooth_data(){ // this function should be put in void loop to continuously send the flame data state to the phone 
+void Bluetooth_data(){ // this function should be put in void loop to continuously send the flame sensor data state to the phone 
 
       int data = digitalRead(FIRE_SENSOR);
       Serial.println(data);

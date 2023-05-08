@@ -53,6 +53,12 @@ void loop()
        digitalWrite (LED_4 ,HIGH);
   }
   
+  if (emptySlots < 0)
+    emptyslots = 0;
+    //close enterance servo
+  else if (emptySlots > 4 )
+    emptySlots = 4;
+  
   // lcdWrite(emptySlots) on LCD
 
   while (!digitalRead (FIRE_SENSOR))
